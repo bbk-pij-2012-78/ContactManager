@@ -2,7 +2,6 @@
  * User: Nick Sutton
  * Date: 27/01/13
  * Time: 11:26
- * To change this template use File | Settings | File Templates.
  */
 
 /**
@@ -10,6 +9,7 @@
  *
  * It includes your notes about what happened and what was agreed.
  */
+
 public interface PastMeeting extends Meeting {
     /**
      * Returns the notes from the meeting.
