@@ -7,8 +7,9 @@
 import org.junit.*;
 import java.util.Calendar;
 import static org.junit.Assert.*;
+
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class MeetingTest {
 
@@ -16,14 +17,17 @@ public class MeetingTest {
 
     @Before
     public void setUp() throws Exception {
+        //create a calendar date to use in the test
         Calendar date = Calendar.getInstance();
         date.set(2012, 1, 1);
 
-        Set<Contact> contacts = new TreeSet<>();
+        //create a hash set with 3 contacts in to use in the test
+        Set<Contact> contacts = new HashSet<>();
         contacts.add(new ContactImpl(1, "John", "notes 1"));
         contacts.add(new ContactImpl(2, "Nick", "notes 2"));
-        contacts.add((new ContactImpl(3, "Keith", "notes 3")));
+        contacts.add(new ContactImpl(3, "Keith", "notes 3"));
 
+        //create a meeting object to use in the test
         meeting = new MeetingImpl(1, date, contacts);
     }
 
