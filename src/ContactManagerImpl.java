@@ -12,31 +12,37 @@ import java.util.Set;
 public class ContactManagerImpl implements ContactManager {
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-
+        return 0;
     }
 
     public PastMeeting getPastMeeting(int id) {
-
+        PastMeetingImpl p = null;
+        return p;
     }
 
     public FutureMeeting getFutureMeeting(int id) {
-
+        FutureMeetingImpl f = null;
+        return f;
     }
 
     public Meeting getMeeting(int id) {
-
+        Meeting m = null;
+        return m;
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact) {
-
+        List<Meeting> l = null;
+        return l;
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date) {
-
+        List<Meeting> l = null;
+        return l;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
-
+        List<PastMeeting> l = null;
+        return l;
     }
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
@@ -52,11 +58,13 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(int... ids) {
-
+        Set<Contact> s = null;
+        return s;
     }
 
     public Set<Contact> getContacts(String name) {
-
+        Set<Contact> s = null;
+        return s;
     }
 
     public void flush() {
