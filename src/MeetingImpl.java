@@ -19,14 +19,17 @@ public class MeetingImpl implements Meeting {
         this.contacts = contacts;
     }
 
+    //return the id of the meeting
     public int getId() {
         return this.id;
     }
 
+    //return the date of the meeting
     public Calendar getDate() {
         return this.meetingDate;
     }
 
+    //return the set of contacts
     public Set<Contact> getContacts() {
         return this.contacts;
     }
