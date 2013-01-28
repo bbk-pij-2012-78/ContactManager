@@ -8,6 +8,7 @@ import org.junit.*;
 import java.util.Calendar;
 import static org.junit.Assert.*;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class MeetingTest {
 
@@ -18,7 +19,7 @@ public class MeetingTest {
         Calendar date = Calendar.getInstance();
         date.set(2012, 1, 1);
 
-        Set<Contact> contacts = new Set;
+        Set<Contact> contacts = new TreeSet<>();
         contacts.add(new ContactImpl(1, "John", "notes 1"));
         contacts.add(new ContactImpl(2, "Nick", "notes 2"));
         contacts.add((new ContactImpl(3, "Keith", "notes 3")));
