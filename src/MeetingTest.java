@@ -17,7 +17,12 @@ public class MeetingTest {
     public void setUp() throws Exception {
         Calendar date = Calendar.getInstance();
         date.set(2012, 1, 1);
+
         Set<Contact> contacts = new Set;
+        contacts.add(new ContactImpl(1, "John", "notes 1"));
+        contacts.add(new ContactImpl(2, "Nick", "notes 2"));
+        contacts.add((new ContactImpl(3, "Keith", "notes 3")));
+
         meeting = new MeetingImpl(1, date, contacts);
     }
 
@@ -33,11 +38,13 @@ public class MeetingTest {
 
     @Test
     public void testGetDate() throws Exception {
-        fail("Not implemented yet.");
+        Calendar checkDate = Calendar.getInstance();
+        checkDate.set(2012, 1, 1);
+        assertEquals(checkDate.toString(), meeting.getDate().toString());
     }
 
     @Test
     public void testGetContacts() throws Exception {
-        fail("Not implemented yet.");
+        assertEquals(3, meeting.getContacts().size());
     }
 }
