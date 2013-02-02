@@ -35,6 +35,7 @@ public class ContactManagerTest {
         date.set(25, 2, 2013);
 
         assertEquals(0, contactManager.addFutureMeeting(contacts, date));
+        assertEquals(1, contactManager.addFutureMeeting(contacts, date));
     }
 
     /*
