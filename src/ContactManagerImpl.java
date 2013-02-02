@@ -5,11 +5,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ContactManagerImpl implements ContactManager {
+
+    private List<Meeting> meetings;
+    private Set<Contact> contacts;
+
+    //the default contructor, ensures that the collections are set on initialisation
+    public ContactManagerImpl() {
+
+        //collection for meetings, uses ArrayList as the size will grow automatically
+        meetings = new ArrayList<>();
+        contacts = new HashSet<>();
+
+    }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         return 0;
