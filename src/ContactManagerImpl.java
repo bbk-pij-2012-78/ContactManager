@@ -19,7 +19,7 @@ public class ContactManagerImpl implements ContactManager {
         //collection for meetings, uses ArrayList as the size will grow automatically
         meetings = new ArrayList<>();
         contacts = new HashSet<>();
-        nextMeetingId = 1;
+        nextMeetingId = 0;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -41,13 +41,45 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public PastMeeting getPastMeeting(int id) {
-        PastMeetingImpl p = null;
-        return p;
+        MeetingImpl m = null;
+
+        //loop over all the meetings in the collection
+        for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
+            m = (MeetingImpl) itr.next();
+
+            //if the ID's match check that the date is not in the future
+            if (m.getId() == id) {
+                if (Calendar.getInstance().compareTo(m.getDate()) > 0) {
+                    throw new IllegalArgumentException("Meeting ID Specified Is A Future Meeting");
+                } else {
+                    //meeting is in the past so break out of the loop
+                    break;
+                }
+            }
+        }
+        //return the meeting casting to a PastMeetingImpl
+        return (PastMeetingImpl) m;
     }
 
     public FutureMeeting getFutureMeeting(int id) {
-        FutureMeetingImpl f = null;
-        return f;
+        MeetingImpl m = null;
+
+        //loop over all the meetings in the collection
+        for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
+            m = (MeetingImpl) itr.next();
+
+            //if the ID's match check that the date is not in the past
+            if (m.getId() == id) {
+                if (Calendar.getInstance().compareTo(m.getDate()) < 0) {
+                    throw new IllegalArgumentException("Meeting ID Specified Is A Past Meeting");
+                } else {
+                    //meeting is in the future so break out of the loop
+                    break;
+                }
+            }
+        }
+        //return the meeting casting to FutureMeetingImpl
+        return (FutureMeetingImpl) m;
     }
 
     public Meeting getMeeting(int id) {
