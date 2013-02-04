@@ -12,6 +12,7 @@ public class ContactManagerImpl implements ContactManager {
     private List<Meeting> meetings;
     private Set<Contact> contacts;
     private int nextMeetingId;
+    private int nextContactId;
 
     //the default constructor, ensures that the collections are set on initialisation
     public ContactManagerImpl() {
@@ -20,6 +21,7 @@ public class ContactManagerImpl implements ContactManager {
         meetings = new ArrayList<>();
         contacts = new HashSet<>();
         nextMeetingId = 0;
+        nextContactId = 0;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -67,12 +69,15 @@ public class ContactManagerImpl implements ContactManager {
 
             //if the ID's match check that the date is not in the past
             if (m.getId() == id) {
-                if (Calendar.getInstance().compareTo(m.getDate()) < 0) {
+                if (m.getDate().before(Calendar.getInstance())) {
                     throw new IllegalArgumentException("Meeting ID Specified Is A Past Meeting");
                 } else {
                     //meeting is in the future so break out of the loop
                     break;
                 }
+            } else {
+                //set to null so that the wrong meeting is not returned
+                m = null;
             }
         }
         //return the meeting casting to FutureMeetingImpl
@@ -125,7 +130,14 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public void addNewContact(String name, String notes) {
-        //TODO - add new contact
+        if (name == null) {throw new NullPointerException("Contact Name Cannot Be NULL");}
+        if (notes == null) {throw new NullPointerException("Notes Cannot Be NULL");}
+
+        //checks have been passed so add a new contact to the contacts collection
+        this.contacts.add(new ContactImpl(nextContactId, name, notes ));
+
+        //increment the Contact ID counter
+        nextContactId ++;
     }
 
     public Set<Contact> getContacts(int... ids) {
