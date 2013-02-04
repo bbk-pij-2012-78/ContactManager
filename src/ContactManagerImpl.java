@@ -80,21 +80,25 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Meeting getMeeting(int id) {
+        //TODO - add code to get a meeting by the ID
         Meeting m = null;
         return m;
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact) {
+        //TODO - add code to get list of all future meetings by contact
         List<Meeting> l = null;
         return l;
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date) {
+        //TODO - add code to get list of all future meetings by date
         List<Meeting> l = null;
         return l;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
+        //TODO - add code to get list of all past meetings by contact
         List<PastMeeting> l = null;
         return l;
     }
@@ -103,7 +107,7 @@ public class ContactManagerImpl implements ContactManager {
         //check that there is at least one contact
         if (contacts.size() == 0) {throw new IllegalArgumentException("Contacts List Must Contain At Least One Contact");}
 
-        //TO DO - Add a check for all contacts
+        //TODO - Add a check for all contacts
 
         if (contacts == null) {throw new NullPointerException("Contacts List Cannot Be NULL");}
         if (date == null) {throw new NullPointerException("Meeting Date Cannot Be NULL");}
@@ -117,24 +121,26 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public void addMeetingNotes(int id, String text) {
-
+        //TODO - add meeting notes
     }
 
     public void addNewContact(String name, String notes) {
-
+        //TODO - add new contact
     }
 
     public Set<Contact> getContacts(int... ids) {
+        //TODO - get contacts by a list of IDs
         Set<Contact> s = null;
         return s;
     }
 
     public Set<Contact> getContacts(String name) {
+        //TODO - get contacts that match a name
         Set<Contact> s = null;
         return s;
     }
 
     public void flush() {
-
+        //TODO - write out the contents of the object to a file
     }
 }
