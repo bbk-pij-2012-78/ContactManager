@@ -6,7 +6,6 @@
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -142,13 +141,23 @@ public class ContactManagerTest {
     @Test
     public void testAddMeetingNotes() throws Exception {
 
-    }
+    } */
 
     @Test
     public void testAddNewContact() throws Exception {
-
+        contactManager.addNewContact("John Smith", "some notes");
     }
 
+    @Test
+    public void testAddNewContactFail() throws Exception {
+        exception.expect(NullPointerException.class);
+        contactManager.addNewContact(null, "some notes");
+
+        exception.expect(NullPointerException.class);
+        contactManager.addNewContact("John Smith", null);
+    }
+
+    /*
     @Test
     public void testGetContacts() throws Exception {
 
