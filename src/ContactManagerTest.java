@@ -87,12 +87,58 @@ public class ContactManagerTest {
     public void testGetPastMeetingList() throws Exception {
 
     }
+    */
 
     @Test
     public void testAddNewPastMeeting() throws Exception {
+        System.out.println("Running Test: testAddNewPastMeeting");
 
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
+
+        String notes = "Some notes";
+
+        contactManager.addNewPastMeeting(contacts, date, notes);
     }
 
+    @Test
+    public void testAddNewPastMeetingFail() throws Exception {
+        System.out.println("Running Test: testAddNewPastMeetingFail");
+
+        Set<Contact> contacts;;
+        contacts = null;
+
+        Calendar date = Calendar.getInstance();
+        date = null;  //set the date to always be a day in the past
+
+        String notes = null;
+
+        // execute the test when all arguments are null
+        exception.expect(NullPointerException.class);
+        contactManager.addNewPastMeeting(contacts, date, notes);
+
+        //set the notes argument to some text and check the call still fails
+        notes = "Some Notes";
+        exception.expect(NullPointerException.class);
+        contactManager.addNewPastMeeting(contacts, date, notes);
+
+        //set the date argument to a date in the past and check the call still fails
+        date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
+        exception.expect(NullPointerException.class);
+        contactManager.addNewPastMeeting(contacts, date, notes);
+
+        //now add a contacts object that is not null but has no contacts
+        //should now get an IllegalArgumentException
+        contacts = new HashSet<>();
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addNewPastMeeting(contacts, date, notes);
+    }
+
+
+    /*
     @Test
     public void testAddMeetingNotes() throws Exception {
 
