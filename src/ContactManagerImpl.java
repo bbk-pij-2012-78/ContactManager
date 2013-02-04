@@ -13,7 +13,7 @@ public class ContactManagerImpl implements ContactManager {
     private Set<Contact> contacts;
     private int nextMeetingId;
 
-    //the default contructor, ensures that the collections are set on initialisation
+    //the default constructor, ensures that the collections are set on initialisation
     public ContactManagerImpl() {
 
         //collection for meetings, uses ArrayList as the size will grow automatically
@@ -23,11 +23,8 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-        Calendar c = Calendar.getInstance();
-
         //check that the date is in the future and that there is at least one contact
-        if (date.compareTo(c) > 0) {throw new IllegalArgumentException("Date Cannot Be In The Past");}
-        if (contacts.size() == 0) {throw new IllegalArgumentException("Meeting Must Contain At Least One Contact");}
+        if (date.before(Calendar.getInstance())) {throw new IllegalArgumentException("Date Cannot Be In The Past");}
 
         //create a future meeting and add it to the collection
         FutureMeetingImpl fm = new FutureMeetingImpl(nextMeetingId, date, contacts);
