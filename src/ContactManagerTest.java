@@ -5,6 +5,7 @@
  */
 
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
 import java.util.HashSet;
@@ -15,6 +16,8 @@ import static org.junit.Assert.*;
 public class ContactManagerTest {
 
     private ContactManager contactManager;
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -28,14 +31,30 @@ public class ContactManagerTest {
 
     @Test
     public void testAddFutureMeeting() throws Exception {
+        System.out.println("Running Test: testAddFutureMeeting");
+
         Set<Contact> contacts = new HashSet<>();
         contacts.add(new ContactImpl(1, "John Smith", "some notes"));
 
         Calendar date = Calendar.getInstance();
-        date.set(25, 2, 2013);
+        date.add(Calendar.DATE, 14);  //set the date to always be 14 days in the future
 
         assertEquals(0, contactManager.addFutureMeeting(contacts, date));
         assertEquals(1, contactManager.addFutureMeeting(contacts, date));
+    }
+
+    @Test
+    public void testAddFutureMeetingFail() {
+        System.out.println("Running Test: testAddFutureMeetingFail");
+
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
+
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addFutureMeeting(contacts, date);
     }
 
     /*
