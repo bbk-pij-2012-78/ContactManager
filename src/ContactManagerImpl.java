@@ -61,32 +61,39 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public FutureMeeting getFutureMeeting(int id) {
-        MeetingImpl m = null;
 
-        //loop over all the meetings in the collection
+        //get the meeting from the ID
+        Meeting m = this.getMeeting(id);
+
+        //if the ID doesn't match any meeting skip and return null
+        if (m != null) {
+            //otherwise check the date is not in the past
+            if (m.getDate().before(Calendar.getInstance())) {
+                throw new IllegalArgumentException("Meeting ID Specified Is A Past Meeting");
+            }
+        }
+
+        //return the object casting to FutureMeetingImpl
+        return (FutureMeetingImpl) m;
+    }
+
+    public Meeting getMeeting(int id) {
+       Meeting m = null;
+
+       //loop over all the meetings in the collection
         for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
             m = (MeetingImpl) itr.next();
 
             //if the ID's match check that the date is not in the past
             if (m.getId() == id) {
-                if (m.getDate().before(Calendar.getInstance())) {
-                    throw new IllegalArgumentException("Meeting ID Specified Is A Past Meeting");
-                } else {
-                    //meeting is in the future so break out of the loop
-                    break;
-                }
+                break;
             } else {
                 //set to null so that the wrong meeting is not returned
                 m = null;
             }
         }
-        //return the meeting casting to FutureMeetingImpl
-        return (FutureMeetingImpl) m;
-    }
 
-    public Meeting getMeeting(int id) {
-        //TODO - add code to get a meeting by the ID
-        Meeting m = null;
+        //return the meeting object
         return m;
     }
 
@@ -141,8 +148,21 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(int... ids) {
-        //TODO - get contacts by a list of IDs
         Set<Contact> s = null;
+        ContactImpl c = null;
+
+        //loop around the IDs that have been passed through
+        for (int id : ids) {
+            for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
+                c = (ContactImpl) itr.next();
+
+                //if the ID's match add the object to the list to be returned
+                if (c.getId() == id) {
+                    s.add(c);
+                }
+            }
+        }
+        //return the set
         return s;
     }
 
