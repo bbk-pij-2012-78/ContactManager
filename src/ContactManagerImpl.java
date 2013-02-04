@@ -27,7 +27,7 @@ public class ContactManagerImpl implements ContactManager {
         if (date.before(Calendar.getInstance())) {throw new IllegalArgumentException("Date Cannot Be In The Past");}
 
         //create a future meeting and add it to the collection
-        FutureMeetingImpl fm = new FutureMeetingImpl(nextMeetingId, date, contacts);
+        Meeting fm = new FutureMeetingImpl(nextMeetingId, date, contacts);
         this.meetings.add(nextMeetingId, fm);
 
         //increment the next meeting ID
@@ -100,7 +100,20 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+        //check that there is at least one contact
+        if (contacts.size() == 0) {throw new IllegalArgumentException("Contacts List Must Contain At Least One Contact");}
 
+        //TO DO - Add a check for all contacts
+
+        if (contacts == null) {throw new NullPointerException("Contacts List Cannot Be NULL");}
+        if (date == null) {throw new NullPointerException("Meeting Date Cannot Be NULL");}
+        if (text == null) {throw new NullPointerException("Meeting Notes Cannot Be NULL");}
+
+        Meeting pm = new PastMeetingImpl(nextMeetingId, date, contacts, text);
+        this.meetings.add(nextMeetingId, pm);
+
+        //increment the next meeting ID
+        this.nextMeetingId ++;
     }
 
     public void addMeetingNotes(int id, String text) {
