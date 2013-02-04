@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PastMeetingImplTest {
+public class PastMeetingTest {
 
     @Test
     public void testGetNotes() throws Exception {
