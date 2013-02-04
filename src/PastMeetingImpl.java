@@ -1,19 +1,19 @@
-import java.util.Calendar;
-import java.util.Set;
-
 /**
- * Created with IntelliJ IDEA.
  * User: Nick
  * Date: 27/01/13
  * Time: 12:12
- * To change this template use File | Settings | File Templates.
  */
+
+import java.util.Calendar;
+import java.util.Set;
+
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 
     private String notes;
 
-    public PastMeetingImpl(int id, Calendar meetingDate, Set<Contact> contacts) {
+    public PastMeetingImpl(int id, Calendar meetingDate, Set<Contact> contacts, String notes) {
         super(id, meetingDate, contacts);
+        this.notes = notes;
     }
 
     public String getNotes() {
