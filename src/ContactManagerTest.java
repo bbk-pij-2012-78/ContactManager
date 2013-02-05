@@ -148,7 +148,7 @@ public class ContactManagerTest {
         Set<Contact> contacts;;
         contacts = null;
 
-        Calendar date = Calendar.getInstance();
+        Calendar date;
         date = null;  //set the date to always be a day in the past
 
         String notes = null;
@@ -195,17 +195,49 @@ public class ContactManagerTest {
         contactManager.addNewContact("John Smith", null);
     }
 
+
+    @Test
+    public void testGetContactsByName() throws Exception {
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+        contactManager.addNewContact("Alan Smith", "notes");
+
+        //execute getContacts for name Peter and check that one contact is returned
+        Set<Contact> contacts = contactManager.getContacts("Peter");
+        assertEquals(contacts.size(), 1);
+
+        //execute getContacts for name Smith and check that three contacts are returned
+        contacts = contactManager.getContacts("Smith");
+        assertEquals(contacts.size(), 3);
+
+        //execute getContacts for name Paul and check that no contacts are returned
+        contacts = contactManager.getContacts("Paul");
+        assertEquals(contacts.size(), 0);
+    }
+
+    @Test
+    public void testGetContactsByNameFail() throws Exception {
+        //test the Exception when a null string is passed in
+        String name = null;
+
+        exception.expect(NullPointerException.class);
+        contactManager.getContacts(name);
+    }
+
+    @Test
+    public void testGetContactsByIDs() throws Exception {
+
+        //add 3 contacts, the id's will be 0,1,2
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+        contactManager.addNewContact("Alan Smith", "notes");
+
+        //execute getContacts for IDs 0,2 and check that two contacts are returned
+        Set<Contact> contacts = contactManager.getContacts(0,2);
+        assertEquals(contacts.size(), 2);
+    }
+
     /*
-    @Test
-    public void testGetContacts() throws Exception {
-
-    }
-
-    @Test
-    public void testGetContacts() throws Exception {
-
-    }
-
     @Test
     public void testFlush() throws Exception {
 
