@@ -148,7 +148,7 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(int... ids) {
-        Set<Contact> s = null;
+        Set<Contact> s = new HashSet<>();
         ContactImpl c;
 
         //loop around the IDs that have been passed through
@@ -171,7 +171,7 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(String name) {
-        Set<Contact> s = null;
+        Set<Contact> s = new HashSet<>();
         ContactImpl c;
 
         //check that a null String has not been passed through
