@@ -149,10 +149,14 @@ public class ContactManagerImpl implements ContactManager {
 
     public Set<Contact> getContacts(int... ids) {
         Set<Contact> s = null;
-        ContactImpl c = null;
+        ContactImpl c;
 
         //loop around the IDs that have been passed through
         for (int id : ids) {
+
+            //TODO - Check that the ID exists as a contact or throw IllegalArgumentException
+
+            //loop over the set of contacts to find matching IDs
             for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
                 c = (ContactImpl) itr.next();
 
@@ -167,8 +171,23 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(String name) {
-        //TODO - get contacts that match a name
         Set<Contact> s = null;
+        ContactImpl c;
+
+        //check that a null String has not been passed through
+        if (name == null) {throw new NullPointerException("Name Cannot Be NULL");}
+
+        //loop over the set of contacts to find matching names
+        for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
+            c = (ContactImpl) itr.next();
+
+            //if the contact name contains the name parameter add the object to the list to be returned
+            if (c.getName().contains(name)) {
+                s.add(c);
+            }
+        }
+
+        //return the set
         return s;
     }
 
