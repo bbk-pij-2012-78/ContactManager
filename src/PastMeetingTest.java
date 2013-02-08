@@ -24,4 +24,15 @@ public class PastMeetingTest {
         //now test that get notes returns the correct string
         assertEquals(pm.getNotes(), notes);
     }
+
+    @Test
+    public void testAddNotes() throws Exception {
+        Set<Contact> contacts = new HashSet<>();
+        Calendar date = Calendar.getInstance();
+        String notes = "Some notes";
+        PastMeetingImpl pm = new PastMeetingImpl(1, date, contacts, notes);
+
+        pm.addNotes("more notes");
+        assertEquals(pm.getNotes(), notes + "\n" + "more notes");
+    }
 }
