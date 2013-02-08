@@ -19,4 +19,16 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
     public String getNotes() {
         return this.notes;
     }
+
+    //add notes to the meeting
+    public void addNotes(String note) {
+        //if there is already some notes stored then add a line break
+        //and then append the new note
+        if (this.notes.length() > 0) {
+            this.notes = this.notes + "\n" + note;
+        } else {
+            //otherwise just set the note
+            this.notes = note;
+        }
+    }
 }
