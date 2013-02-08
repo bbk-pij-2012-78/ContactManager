@@ -133,7 +133,15 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public void addMeetingNotes(int id, String text) {
-        //TODO - add meeting notes
+        Meeting m = this.getMeeting(id);
+        if (m == null) {throw new IllegalArgumentException("Meeting ID Does Not Exists");}
+        if (m.getDate().after(Calendar.getInstance())) {throw new  IllegalArgumentException("Meeting Date Is In The Future");}
+        if (text == null) {throw new NullPointerException("Notes Text Cannot Be Null");}
+
+        //cast the meeting to a past meeting
+        PastMeetingImpl pm = (PastMeetingImpl) m;
+        //add the notes
+        pm.addNotes(text);
     }
 
     public void addNewContact(String name, String notes) {
