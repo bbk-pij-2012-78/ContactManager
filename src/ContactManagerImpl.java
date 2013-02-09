@@ -48,7 +48,7 @@ public class ContactManagerImpl implements ContactManager {
 
             //if the ID's match check that the date is not in the future
             if (m.getId() == id) {
-                if (Calendar.getInstance().compareTo(m.getDate()) > 0) {
+                if (Calendar.getInstance().before(m.getDate())) {
                     throw new IllegalArgumentException("Meeting ID Specified Is A Future Meeting");
                 } else {
                     //meeting is in the past so break out of the loop
