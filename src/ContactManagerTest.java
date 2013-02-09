@@ -175,11 +175,46 @@ public class ContactManagerTest {
     }
 
 
-    /*
+
     @Test
     public void testAddMeetingNotes() throws Exception {
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
 
-    } */
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);
+        contactManager.addNewPastMeeting(contacts, date, "meeting notes");
+
+        //now add some additional notes
+        contactManager.addMeetingNotes(0, "more notes");
+        assertEquals(contactManager.getPastMeeting(0).getNotes(), "meeting notes" + "\n" + "more notes");
+    }
+
+    @Test
+    public void testAddMeetingNotesFail() throws Exception {
+        //pass an ID through without a meeting and expect an illegal argument
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addMeetingNotes(1, "some notes");
+
+        //add a future meeting and then pass that ID back and expect an illegal argument
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);
+
+        int id = contactManager.addFutureMeeting(contacts, date);
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addMeetingNotes(id, "some notes");
+
+        //now pass in a null string for the notes and expect a null pointer exception
+        contactManager = new ContactManagerImpl();  //reset the contacts manager so we know the meeting ID is 0
+        date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);
+        contactManager.addNewPastMeeting(contacts, date, "meeting notes");
+
+        exception.expect(NullPointerException.class);
+        contactManager.addMeetingNotes(0, null);
+    }
 
     @Test
     public void testAddNewContact() throws Exception {
