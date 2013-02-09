@@ -56,11 +56,38 @@ public class ContactManagerTest {
         contactManager.addFutureMeeting(contacts, date);
     }
 
-    /*
+
     @Test
     public void testGetPastMeeting() throws Exception {
+        //add a past meeting and then check the notes match
 
-    } */
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);  //set the date to be in the past
+
+        //create a list of contacts to add
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+
+        contactManager.addNewPastMeeting(contacts, date, "notes");
+        assertEquals(contactManager.getPastMeeting(0).getNotes(), "notes");
+    }
+
+    @Test
+    public void testGetPastMeetingFail() throws Exception {
+        //add a future meeting and then pass that ID to getPastMeeting and expect an error
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 2);  //set the date to be in the future
+
+        //create a list of contacts to add
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+
+        int id = contactManager.addFutureMeeting(contacts, date);
+        exception.expect(IllegalArgumentException.class);
+        contactManager.getPastMeeting(id);
+    }
 
     @Test
     public void testGetFutureMeeting() throws Exception {
@@ -173,8 +200,6 @@ public class ContactManagerTest {
         exception.expect(IllegalArgumentException.class);
         contactManager.addNewPastMeeting(contacts, date, notes);
     }
-
-
 
     @Test
     public void testAddMeetingNotes() throws Exception {
