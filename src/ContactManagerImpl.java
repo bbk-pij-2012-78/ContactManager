@@ -162,7 +162,7 @@ public class ContactManagerImpl implements ContactManager {
         //loop around the IDs that have been passed through
         for (int id : ids) {
 
-            //TODO - Check that the ID exists as a contact or throw IllegalArgumentException
+            if (!contactExists(id)) {throw new IllegalArgumentException("ID " + id + " Does Not Exist");}
 
             //loop over the set of contacts to find matching IDs
             for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
@@ -197,6 +197,22 @@ public class ContactManagerImpl implements ContactManager {
 
         //return the set
         return s;
+    }
+
+    private boolean contactExists(int id) {
+        //loop over all contacts and check that the id exists
+        ContactImpl c;
+
+        for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
+            c = (ContactImpl) itr.next();
+
+            //if the contact ID matches the id  parameter return true
+            if (c.getId() == id) {
+                return true;
+            }
+        }
+        //if the code gets this far the ID doesn't exist so return false
+        return false;
     }
 
     public void flush() {
