@@ -60,6 +60,7 @@ public class ContactManagerTest {
     @Test
     public void testGetPastMeeting() throws Exception {
         //add a past meeting and then check the notes match
+        System.out.println("Running Test: testGetPastMeeting");
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, -1);  //set the date to be in the past
@@ -76,6 +77,8 @@ public class ContactManagerTest {
     @Test
     public void testGetPastMeetingFail() throws Exception {
         //add a future meeting and then pass that ID to getPastMeeting and expect an error
+        System.out.println("Running Test: testGetPastMeetingFail");
+
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, 2);  //set the date to be in the future
 
@@ -91,6 +94,8 @@ public class ContactManagerTest {
 
     @Test
     public void testGetFutureMeeting() throws Exception {
+        System.out.println("Running Test: testGetFutureMeeting");
+
         Calendar fc = Calendar.getInstance();
 
         //create a list of contacts to add
@@ -114,6 +119,8 @@ public class ContactManagerTest {
 
     @Test
     public void testGetMeeting() throws Exception {
+        System.out.println("Running Test: testGetMeeting");
+
         Calendar fc = Calendar.getInstance();
 
         //create a list of contacts to add
@@ -203,6 +210,8 @@ public class ContactManagerTest {
 
     @Test
     public void testAddMeetingNotes() throws Exception {
+        System.out.println("Running Test: testAddMeetingNotes");
+
         Set<Contact> contacts = new HashSet<>();
         contacts.add(new ContactImpl(1, "John Smith", "some notes"));
 
@@ -217,6 +226,8 @@ public class ContactManagerTest {
 
     @Test
     public void testAddMeetingNotesFail() throws Exception {
+        System.out.println("Running Test: testAddMeetingNotesFail");
+
         //pass an ID through without a meeting and expect an illegal argument
         exception.expect(IllegalArgumentException.class);
         contactManager.addMeetingNotes(1, "some notes");
@@ -243,11 +254,14 @@ public class ContactManagerTest {
 
     @Test
     public void testAddNewContact() throws Exception {
+        System.out.println("Running Test: testAddNewContact");
         contactManager.addNewContact("John Smith", "some notes");
     }
 
     @Test
     public void testAddNewContactFail() throws Exception {
+        System.out.println("Running Test: testAddNewContactFail");
+
         exception.expect(NullPointerException.class);
         contactManager.addNewContact(null, "some notes");
 
@@ -258,6 +272,8 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContactsByName() throws Exception {
+        System.out.println("Running Test: testGetContactsByName");
+
         contactManager.addNewContact("John Smith", "some notes");
         contactManager.addNewContact("Peter Smith", "some other notes");
         contactManager.addNewContact("Alan Smith", "notes");
@@ -278,6 +294,8 @@ public class ContactManagerTest {
     @Test
     public void testGetContactsByNameFail() throws Exception {
         //test the Exception when a null string is passed in
+        System.out.println("Running Test: testGetContactsByNameFail");
+
         String name = null;
 
         exception.expect(NullPointerException.class);
@@ -286,6 +304,7 @@ public class ContactManagerTest {
 
     @Test
     public void testGetContactsByIDs() throws Exception {
+        System.out.println("Running Test: testGetContactsByIDs");
 
         //add 3 contacts, the id's will be 0,1,2
         contactManager.addNewContact("John Smith", "some notes");
