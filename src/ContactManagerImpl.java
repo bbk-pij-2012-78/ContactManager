@@ -104,9 +104,9 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date) {
-        //TODO - sort the list before returning it
-        List<Meeting> futMeetings = new ArrayList<>();
-        Meeting m;
+        //Implement a list of MeetingImpl so we can use the Comparable to sort
+        List<MeetingImpl> futMeetings = new ArrayList<>();
+        MeetingImpl m;
 
         for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
             m = (MeetingImpl) itr.next();
@@ -120,7 +120,15 @@ public class ContactManagerImpl implements ContactManager {
             }
         }
 
-        return futMeetings;
+        //sort the list
+        Collections.sort(futMeetings);
+
+        //now create a list of Meeting to return
+        List<Meeting> retMeetings = new ArrayList<>();
+        for (Iterator itr = futMeetings.iterator(); itr.hasNext(); ) {
+            retMeetings.add((Meeting) itr.next());
+        }
+        return retMeetings;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
