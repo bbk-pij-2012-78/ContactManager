@@ -157,6 +157,7 @@ public class ContactManagerTest {
 
         Calendar date1 = Calendar.getInstance();
         Calendar date2 = Calendar.getInstance();
+        Calendar date3 = Calendar.getInstance();
 
         date1.add(Calendar.DATE, 2);
         date2.add(Calendar.DATE, 3);
@@ -180,7 +181,11 @@ public class ContactManagerTest {
         list = contactManager.getFutureMeetingList(date2);
         assertEquals(list.size(), 1);
 
-
+        //use a date that is the same date as date1 but a different time
+        // to check the comparison works with different times
+        date3.add(Calendar.DATE, 2);
+        list = contactManager.getFutureMeetingList(date3);
+        assertEquals(list.size(), 2);
     }
 
     /*
