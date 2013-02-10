@@ -7,7 +7,7 @@
 import java.util.Calendar;
 import java.util.Set;
 
-public class MeetingImpl implements Meeting {
+public class MeetingImpl implements Meeting, Comparable<Meeting> {
 
     private int id;
     private Calendar meetingDate;
@@ -34,4 +34,13 @@ public class MeetingImpl implements Meeting {
         return this.contacts;
     }
 
+    public int compareTo(Meeting meeting) {
+        if (this.getDate().before(meeting.getDate())) {
+            return -1;
+        } else if (this.getDate().after(meeting.getDate())) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
