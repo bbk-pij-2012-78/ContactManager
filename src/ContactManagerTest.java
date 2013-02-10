@@ -8,6 +8,7 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -148,12 +149,41 @@ public class ContactManagerTest {
     public void testGetFutureMeetingList() throws Exception {
 
     }
+    */
 
     @Test
-    public void testGetFutureMeetingList() throws Exception {
+    public void testGetFutureMeetingListDate() throws Exception {
+        System.out.println("Running Test: testGetFutureMeetingListDate");
+
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+
+        date1.add(Calendar.DATE, 2);
+        date2.add(Calendar.DATE, 3);
+
+        //create a list of contacts to add
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+
+
+        int id1 = contactManager.addFutureMeeting(contacts, date1);
+        int id2 = contactManager.addFutureMeeting(contacts, date1);
+
+        int id3 = contactManager.addFutureMeeting(contacts, date2);
+
+        //check that we get two meetings returned for date1
+        List<Meeting> list = contactManager.getFutureMeetingList(date1);
+        assertEquals(list.size(), 2);
+
+        //now check we get one meeting back for date2
+        list = contactManager.getFutureMeetingList(date2);
+        assertEquals(list.size(), 1);
+
 
     }
 
+    /*
     @Test
     public void testGetPastMeetingList() throws Exception {
 

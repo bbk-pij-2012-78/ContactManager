@@ -104,9 +104,23 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date) {
-        //TODO - add code to get list of all future meetings by date
-        List<Meeting> l = null;
-        return l;
+        //TODO - sort the list before returning it
+        List<Meeting> futMeetings = new ArrayList<>();
+        Meeting m;
+
+        for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
+            m = (MeetingImpl) itr.next();
+
+            //if the meeting date matches the date parameter and the meeting
+            // is in the future add to return list
+            if (m.getDate().compareTo(date) == 0) {
+                if (m.getDate().after(Calendar.getInstance())) {
+                    futMeetings.add(m);
+                }
+            }
+        }
+
+        return futMeetings;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
