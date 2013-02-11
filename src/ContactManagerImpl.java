@@ -123,12 +123,7 @@ public class ContactManagerImpl implements ContactManager {
         //sort the list
         Collections.sort(futMeetings);
 
-        //now create a list of Meeting to return
-        List<Meeting> retMeetings = new ArrayList<>();
-        for (Iterator itr = futMeetings.iterator(); itr.hasNext(); ) {
-            retMeetings.add((Meeting) itr.next());
-        }
-        return retMeetings;
+        return (List) futMeetings;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
