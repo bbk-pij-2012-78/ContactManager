@@ -135,8 +135,8 @@ public class ContactManagerImpl implements ContactManager {
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
         //check that there is at least one contact
         if (contacts.size() == 0) {throw new IllegalArgumentException("Contacts List Must Contain At Least One Contact");}
-        if (contacts == null) {throw new NullPointerException("Contacts List Cannot Be NULL");}
-        if (!this.allContactsExist(contacts)) {throw new NullPointerException("One Or More Contacts Do Not Exists");}
+        if (contacts == null) {throw new IllegalArgumentException("Contacts List Cannot Be NULL");}
+        if (!this.allContactsExist(contacts)) {throw new IllegalArgumentException("One Or More Contacts Do Not Exists");}
         if (date == null) {throw new NullPointerException("Meeting Date Cannot Be NULL");}
         if (text == null) {throw new NullPointerException("Meeting Notes Cannot Be NULL");}
 
