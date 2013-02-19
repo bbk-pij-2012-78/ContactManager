@@ -78,9 +78,9 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Meeting getMeeting(int id) {
-       Meeting m = null;
+        Meeting m = null;
 
-       //loop over all the meetings in the collection
+        //loop over all the meetings in the collection
         for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
             m = (MeetingImpl) itr.next();
 
@@ -135,15 +135,14 @@ public class ContactManagerImpl implements ContactManager {
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
         //check that there is at least one contact
         if (contacts.size() == 0) {throw new IllegalArgumentException("Contacts List Must Contain At Least One Contact");}
-
-        //TODO - Add a check for all contacts
-
         if (contacts == null) {throw new NullPointerException("Contacts List Cannot Be NULL");}
+        if (!this.allContactsExist(contacts)) {throw new NullPointerException("One Or More Contacts Do Not Exists");}
         if (date == null) {throw new NullPointerException("Meeting Date Cannot Be NULL");}
         if (text == null) {throw new NullPointerException("Meeting Notes Cannot Be NULL");}
 
         Meeting pm = new PastMeetingImpl(nextMeetingId, date, contacts, text);
         this.meetings.add(nextMeetingId, pm);
+
 
         //increment the next meeting ID
         this.nextMeetingId ++;
@@ -214,6 +213,22 @@ public class ContactManagerImpl implements ContactManager {
 
         //return the set
         return s;
+    }
+
+    private boolean allContactsExist(Set<Contact> checkContacts) {
+        ContactImpl c;
+
+        //loop over the set of contacts to find matching names
+        for (Iterator itr = checkContacts.iterator(); itr.hasNext(); ) {
+            c = (ContactImpl) itr.next();
+
+            //if the contact name contains the name parameter add the object to the list to be returned
+            if (!this.contactExists(c.getId())) {
+                return false;
+            }
+        }
+        //if we reach here all the IDs have matched so return true
+        return true;
     }
 
     private boolean contactExists(int id) {
