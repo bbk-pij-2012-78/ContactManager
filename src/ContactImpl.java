@@ -4,6 +4,7 @@
  * Time: 12:03
  */
 
+
 public class ContactImpl implements Contact {
 
     private int id;
@@ -37,6 +38,5 @@ public class ContactImpl implements Contact {
             //otherwise just set the note
             this.notes = note;
         }
-
     }
 }
