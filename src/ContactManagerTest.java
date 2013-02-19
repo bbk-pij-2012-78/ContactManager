@@ -244,6 +244,26 @@ public class ContactManagerTest {
     }
 
     @Test
+    public void testContactsExist() throws Exception {
+        System.out.println("Running Test: testContactsExist");
+        String notes = "";
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
+
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+        contactManager.addNewContact("Alan Smith", "notes");
+
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(99, "Peter Smith", "some other notes"));
+
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addNewPastMeeting(contacts, date, notes);
+    }
+
+
+    @Test
     public void testAddMeetingNotes() throws Exception {
         System.out.println("Running Test: testAddMeetingNotes");
 
