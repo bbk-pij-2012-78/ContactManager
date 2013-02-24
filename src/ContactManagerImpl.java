@@ -14,6 +14,10 @@ import java.io.ObjectOutputStream;
 public class ContactManagerImpl implements ContactManager {
     private static final String FILENAME = "contacts.txt";
 
+    private enum MeetingType {
+        PAST, FUTURE
+    }
+
     private List<Meeting> meetings;
     private Set<Contact> contacts;
     private int nextMeetingId;
@@ -103,9 +107,7 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact) {
-        //TODO - add code to get list of all future meetings by contact
-        List<Meeting> l = null;
-        return l;
+        return this.searchMeetings(contact, MeetingType.FUTURE);
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date) {
@@ -132,9 +134,9 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact) {
-        //TODO - add code to get list of all past meetings by contact
-        List<PastMeeting> l = null;
-        return l;
+        if (!contactExists(contact.getId())) {throw new IllegalArgumentException("Contact Does Not Exists");}
+
+        return (List) this.searchMeetings(contact, MeetingType.PAST);
     }
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
@@ -265,5 +267,48 @@ public class ContactManagerImpl implements ContactManager {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    //searches for past or future meetings that match a contact
+    //enum is used so code is not duplicated
+    private List<Meeting> searchMeetings(Contact contact, MeetingType mt) {
+
+        List<MeetingImpl> retMeetings = new ArrayList<>();
+        MeetingImpl m;
+        ContactImpl c;
+
+        //loop over all meetings
+        for (Iterator itrM = meetings.iterator(); itrM.hasNext(); ) {
+            m = (MeetingImpl) itrM.next();
+
+            //loop over the set of meeting contacts to see if the IDs match
+            for (Iterator itrC = m.getContacts().iterator(); itrC.hasNext(); ) {
+                c = (ContactImpl) itr.next();
+
+                if (c.getId() == contact.getId()) {
+
+                    //check the date based on if we are looking for past or future meetings
+                    switch (mt) {
+                        case PAST:
+                            if (m.getDate().before(Calendar.getInstance())) {
+                                retMeetings.add(m);
+                            }
+                            break;
+
+                        case FUTURE:
+                            if (!m.getDate().before(Calendar.getInstance())) {
+                                retMeetings.add(m);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        //sort the meetings list
+        Collections.sort(retMeetings);
+
+        //return the meeting list
+        return (List) retMeetings;
     }
 }
