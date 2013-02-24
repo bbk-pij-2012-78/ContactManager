@@ -6,6 +6,8 @@
 
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -371,9 +373,31 @@ public class ContactManagerTest {
         assertEquals(contacts.size(), 2);
     }
 
-    /*
+
     @Test
     public void testFlush() throws Exception {
 
-    } */
+        File f = new File("contacts.txt");
+
+        //delete the file if it exists so we know a new one was created
+        if (f.exists()) {
+            f.delete();
+        }
+
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes"));
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);
+
+        contactManager.addFutureMeeting(contacts, date);
+
+        contactManager.flush();
+
+        assertTrue(f.exists());
+    }
 }
