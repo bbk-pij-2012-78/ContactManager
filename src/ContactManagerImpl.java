@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.List;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Collections;
 
 public class ContactManagerImpl implements ContactManager {
     private static final String FILENAME = "contacts.txt";
@@ -286,7 +289,7 @@ public class ContactManagerImpl implements ContactManager {
 
             //loop over the set of meeting contacts to see if the IDs match
             for (Iterator itrC = m.getContacts().iterator(); itrC.hasNext(); ) {
-                c = (ContactImpl) itr.next();
+                c = (ContactImpl) itrC.next();
 
                 if (c.getId() == contact.getId()) {
 
