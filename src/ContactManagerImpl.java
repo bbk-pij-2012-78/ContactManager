@@ -5,9 +5,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
+import java.io.ObjectOutputStream;
 
 public class ContactManagerImpl implements ContactManager {
+    private static final String FILENAME = "contacts.txt";
 
     private List<Meeting> meetings;
     private Set<Contact> contacts;
@@ -247,7 +252,18 @@ public class ContactManagerImpl implements ContactManager {
         return false;
     }
 
+    private void load() {
+
+    }
+
     public void flush() {
-        //TODO - write out the contents of the object to a file
+        //write out the contents of the two collections to a file
+        try (ObjectOutputStream output = new ObjectOutputStream(
+                new BufferedOutputStream(new FileOutputStream(FILENAME)));) {
+            output.writeObject(this.contacts);
+            output.writeObject(this.meetings);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
