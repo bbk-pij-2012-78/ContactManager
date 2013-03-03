@@ -17,19 +17,30 @@ import static org.junit.Assert.*;
 
 public class ContactManagerTest {
 
+    private static final String FILENAME = "contacts.txt";
+
     private ContactManager contactManager;
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
+        deleteContactsFile();
         contactManager = new ContactManagerImpl();
     }
 
     @After
     public void tearDown() throws Exception {
         contactManager = null;
+        deleteContactsFile();
     }
+
+    private void deleteContactsFile() {
+        if (new File(FILENAME).exists()) {
+            new File(FILENAME).delete();
+        }
+    }
+
 
     @Test
     public void testAddFutureMeeting() throws Exception {
@@ -68,10 +79,14 @@ public class ContactManagerTest {
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, -1);  //set the date to be in the past
 
+        //add the contacts to contact manager or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
-        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
 
         contactManager.addNewPastMeeting(contacts, date, "notes");
         assertEquals(contactManager.getPastMeeting(0).getNotes(), "notes");
@@ -126,11 +141,16 @@ public class ContactManagerTest {
 
         Calendar fc = Calendar.getInstance();
 
+        //add contacts to contact manager or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+        contactManager.addNewContact("Alan Smith", "notes");
+
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
-        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
-        contacts.add(new ContactImpl(3, "Alan Smith", "notes" ));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
+        contacts.add(new ContactImpl(2, "Alan Smith", "notes" ));
 
         //add two new future meetings
         fc.add(Calendar.DATE, 1);  //ensure the date is in the future
@@ -164,6 +184,10 @@ public class ContactManagerTest {
         date1.add(Calendar.DATE, 2);
         date2.add(Calendar.DATE, 3);
 
+        //add contacts to contact manager or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
         contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
@@ -172,7 +196,6 @@ public class ContactManagerTest {
 
         int id1 = contactManager.addFutureMeeting(contacts, date1);
         int id2 = contactManager.addFutureMeeting(contacts, date1);
-
         int id3 = contactManager.addFutureMeeting(contacts, date2);
 
         //check that we get two meetings returned for date1
@@ -201,8 +224,11 @@ public class ContactManagerTest {
     public void testAddNewPastMeeting() throws Exception {
         System.out.println("Running Test: testAddNewPastMeeting");
 
+        //add the contact to contact manager first or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
@@ -270,7 +296,8 @@ public class ContactManagerTest {
         System.out.println("Running Test: testAddMeetingNotes");
 
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
+        contactManager.addNewContact("John Smith", "some notes");
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, -1);
@@ -377,7 +404,7 @@ public class ContactManagerTest {
     @Test
     public void testFlush() throws Exception {
 
-        File f = new File("contacts.txt");
+        File f = new File(FILENAME);
 
         //delete the file if it exists so we know a new one was created
         if (f.exists()) {
