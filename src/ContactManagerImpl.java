@@ -5,10 +5,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.List;
@@ -16,6 +12,14 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Collections;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class ContactManagerImpl implements ContactManager {
     private static final String FILENAME = "contacts.txt";
@@ -31,12 +35,40 @@ public class ContactManagerImpl implements ContactManager {
 
     //the default constructor, ensures that the collections are set on initialisation
     public ContactManagerImpl() {
+        if (!new File(FILENAME).exists()) {
+            //collection for meetings, uses ArrayList as the size will grow automatically
+            meetings = new ArrayList<>();
+            contacts = new HashSet<>();
+            nextMeetingId = 0;
+            nextContactId = 0;
+        }  else
+            try (ObjectInputStream is = new ObjectInputStream(
+                    new BufferedInputStream(new FileInputStream(FILENAME)));) {
+                contacts = (Set<Contact>) is.readObject();
+                meetings = (List<Meeting>) is.readObject();
+                this.setNextIDs();
+            } catch (IOException | ClassNotFoundException ex) {
+                System.err.println("Error Reading " + FILENAME + "\n" + "Error Details: " + ex );
+            }
+    }
 
-        //collection for meetings, uses ArrayList as the size will grow automatically
-        meetings = new ArrayList<>();
-        contacts = new HashSet<>();
-        nextMeetingId = 0;
-        nextContactId = 0;
+    private void setNextIDs() {
+        //sets the next ID fields after the contacts file has been read
+        ContactImpl c;
+        MeetingImpl m;
+
+        this.nextContactId = 0;
+        this.nextMeetingId = 0;
+
+        for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
+            c = (ContactImpl) itr.next();
+            if (c.getId() > this.nextContactId) {this.nextContactId = c.getId() + 1;}
+        }
+
+        for (Iterator itr = meetings.iterator(); itr.hasNext(); ) {
+            m = (MeetingImpl) itr.next();
+            if (m.getId() > this.nextMeetingId) {this.nextMeetingId = m.getId() + 1;}
+        }
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -258,10 +290,6 @@ public class ContactManagerImpl implements ContactManager {
         }
         //if the code gets this far the ID doesn't exist so return false
         return false;
-    }
-
-    private void load() {
-
     }
 
     public void flush() {
