@@ -217,6 +217,15 @@ public class ContactManagerTest {
         assertEquals(list.size(), 1);
     }
 
+    @Test
+    public void testGetFutureMeetingListContactFail() throws Exception {
+        System.out.println("Running Test: testGetFutureMeetingListContactFail");
+
+        Contact c = new ContactImpl(99, "Peter Jones", "notes");
+
+        exception.expect(IllegalArgumentException.class);
+        List<Meeting> list = contactManager.getFutureMeetingList(c);
+    }
 
     @Test
     public void testGetFutureMeetingListDate() throws Exception {
