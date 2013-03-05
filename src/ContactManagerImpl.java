@@ -241,11 +241,11 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public Set<Contact> getContacts(String name) {
-        Set<Contact> s = new HashSet<>();
-        ContactImpl c;
-
         //check that a null String has not been passed through
         if (name == null) {throw new NullPointerException("Name Cannot Be NULL");}
+
+        Set<Contact> s = new HashSet<>();
+        ContactImpl c;
 
         //loop over the set of contacts to find matching names
         for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
