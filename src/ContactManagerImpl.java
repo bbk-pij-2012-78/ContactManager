@@ -74,6 +74,7 @@ public class ContactManagerImpl implements ContactManager {
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         //check that the date is in the future and that there is at least one contact
         if (date.before(Calendar.getInstance())) {throw new IllegalArgumentException("Date Cannot Be In The Past");}
+        if (!allContactsExist(contacts)) {throw new IllegalArgumentException("One Or More Contacts Do Not Exist");}
 
         //create a future meeting and add it to the collection
         Meeting fm = new FutureMeetingImpl(nextMeetingId, date, contacts);
