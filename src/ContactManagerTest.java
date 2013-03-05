@@ -247,7 +247,6 @@ public class ContactManagerTest {
         contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
         contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
 
-
         int id1 = contactManager.addFutureMeeting(contacts, date1);
         int id2 = contactManager.addFutureMeeting(contacts, date1);
         int id3 = contactManager.addFutureMeeting(contacts, date2);
@@ -265,14 +264,23 @@ public class ContactManagerTest {
         date3.add(Calendar.DATE, 2);
         list = contactManager.getFutureMeetingList(date3);
         assertEquals(list.size(), 2);
+        //TODO add a test to check the list is sorted chronologically
     }
 
-    /*
     @Test
     public void testGetPastMeetingList() throws Exception {
 
     }
-    */
+
+    @Test
+    public void testGetPastMeetingListFail() throws Exception {
+        System.out.println("Running Test: testGetPastMeetingListFail");
+
+        Contact c = new ContactImpl(99, "Peter Jones", "notes");
+
+        exception.expect(IllegalArgumentException.class);
+        List<PastMeeting> list = contactManager.getPastMeetingList(c);
+    }
 
     @Test
     public void testAddNewPastMeeting() throws Exception {
