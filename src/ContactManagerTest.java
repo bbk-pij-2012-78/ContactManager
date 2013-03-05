@@ -269,7 +269,46 @@ public class ContactManagerTest {
 
     @Test
     public void testGetPastMeetingList() throws Exception {
+        System.out.println("Running Test: testGetPastMeetingList");
 
+        Calendar date1 = Calendar.getInstance();
+        Calendar date2 = Calendar.getInstance();
+        Calendar date3 = Calendar.getInstance();
+
+        date1.add(Calendar.DATE, -2);
+        date2.add(Calendar.DATE, -3);
+        date3.add(Calendar.DATE, 4);
+        //add contacts to contact manager or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+
+        //create a list of contacts to add
+        Set<Contact> contacts = new HashSet<>();
+        Contact c1 = new ContactImpl(0, "John Smith", "some notes" );
+        contacts.add(c1);
+
+        contactManager.addNewPastMeeting(contacts, date1, "Past Meeting 1");
+        contactManager.addNewPastMeeting(contacts, date1, "Past Meeting 2");
+        //add a future meeting to check we only get past meetings
+        contactManager.addFutureMeeting(contacts, date3);
+        //check that we get two meetings returned for contact 1
+        Contact c2 = new ContactImpl(1, "Peter Smith", "some other notes" );
+        List<PastMeeting> list = contactManager.getPastMeetingList(c1);
+        assertEquals(2, list.size());
+        //check no meetings returned for contact 2
+
+        list = contactManager.getPastMeetingList(c2);
+        assertEquals(0, list.size());
+
+        //add another contact and check we only get one meeting back
+        Set<Contact> contacts2 = new HashSet<>();
+        contacts2.add(c1);
+        contacts2.add(c2);
+        contactManager.addNewPastMeeting(contacts2, date2, "Past Meeting 3");
+        list = contactManager.getPastMeetingList(c2);
+        assertEquals(1, list.size());
+
+        //TODO add a test to check the list is sorted chronologically
     }
 
     @Test
