@@ -57,11 +57,13 @@ public class ContactManagerTest {
     }
 
     @Test
-    public void testAddFutureMeetingFail() {
-        System.out.println("Running Test: testAddFutureMeetingFail");
+    public void testAddFutureMeetingFailDate() {
+        System.out.println("Running Test: testAddFutureMeetingFailDate");
+
+        contactManager.addNewContact("John Smith", "some notes");
 
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, -1);  //set the date to always be a day in the past
@@ -70,6 +72,19 @@ public class ContactManagerTest {
         contactManager.addFutureMeeting(contacts, date);
     }
 
+    @Test
+    public void testAddFutureMeetingFailContact() {
+        System.out.println("Running Test: testAddFutureMeetingFailContact");
+
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);  //set the date to always be a day in the future
+
+        exception.expect(IllegalArgumentException.class);
+        contactManager.addFutureMeeting(contacts, date);
+    }
 
     @Test
     public void testGetPastMeeting() throws Exception {
