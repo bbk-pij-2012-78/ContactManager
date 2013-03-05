@@ -118,7 +118,7 @@ public class ContactManagerTest {
         date.add(Calendar.DATE, 2);  //set the date to be in the future
 
         contactManager.addNewContact("John Smith", "some notes");
-        contactManager.addNewContact("Peter Smith", "some other notes" );
+        contactManager.addNewContact("Peter Smith", "some other notes");
 
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
@@ -190,12 +190,33 @@ public class ContactManagerTest {
         assertEquals(m1, contactManager.getMeeting(m1).getId());
         assertEquals(m2, contactManager.getMeeting(m2).getId());
     }
-     /*
-    @Test
-    public void testGetFutureMeetingList() throws Exception {
 
+
+    @Test
+    public void testGetFutureMeetingListContact() throws Exception {
+        System.out.println("Running Test: testGetFutureMeetingListContact");
+
+        //add contacts to contact manager or the test will fail
+        contactManager.addNewContact("John Smith", "some notes");
+        Contact c = new ContactImpl(0, "John Smith", "some notes");
+
+        Set<Contact> contacts = new HashSet<>();
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
+
+        //add a future meeting and a past meeting and check that only 1 is returned in the list
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, -1);
+        contactManager.addNewPastMeeting(contacts, date, "past meeting");
+
+        date = Calendar.getInstance();
+        date.add(Calendar.DATE, 1);
+        contactManager.addFutureMeeting(contacts, date);
+
+        //check we only get one meeting back for the contact
+        List<Meeting> list = contactManager.getFutureMeetingList(c);
+        assertEquals(list.size(), 1);
     }
-    */
+
 
     @Test
     public void testGetFutureMeetingListDate() throws Exception {
