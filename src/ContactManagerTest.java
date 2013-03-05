@@ -46,8 +46,10 @@ public class ContactManagerTest {
     public void testAddFutureMeeting() throws Exception {
         System.out.println("Running Test: testAddFutureMeeting");
 
+        contactManager.addNewContact("John Smith", "some notes");
+
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes"));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes"));
 
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, 14);  //set the date to always be 14 days in the future
@@ -115,10 +117,13 @@ public class ContactManagerTest {
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE, 2);  //set the date to be in the future
 
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes" );
+
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
-        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
 
         int id = contactManager.addFutureMeeting(contacts, date);
         exception.expect(IllegalArgumentException.class);
@@ -131,11 +136,15 @@ public class ContactManagerTest {
 
         Calendar fc = Calendar.getInstance();
 
+        contactManager.addNewContact("John Smith", "some notes");
+        contactManager.addNewContact("Peter Smith", "some other notes");
+        contactManager.addNewContact("Alan Smith", "notes");
+
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
-        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
-        contacts.add(new ContactImpl(3, "Alan Smith", "notes" ));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
+        contacts.add(new ContactImpl(2, "Alan Smith", "notes" ));
 
         //add two new future meetings
         fc.add(Calendar.DATE, 1);  //ensure the date is in the future
@@ -205,8 +214,8 @@ public class ContactManagerTest {
 
         //create a list of contacts to add
         Set<Contact> contacts = new HashSet<>();
-        contacts.add(new ContactImpl(1, "John Smith", "some notes" ));
-        contacts.add(new ContactImpl(2, "Peter Smith", "some other notes" ));
+        contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
+        contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
 
 
         int id1 = contactManager.addFutureMeeting(contacts, date1);
