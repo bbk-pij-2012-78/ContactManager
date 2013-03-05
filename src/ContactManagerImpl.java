@@ -146,6 +146,7 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact) {
+        if (!contactExists(contact.getId())) {throw new IllegalArgumentException("Contact Does Not Exists");}
         return this.searchMeetings(contact, MeetingType.FUTURE);
     }
 
@@ -188,7 +189,6 @@ public class ContactManagerImpl implements ContactManager {
 
         Meeting pm = new PastMeetingImpl(nextMeetingId, date, contacts, text);
         this.meetings.add(nextMeetingId, pm);
-
 
         //increment the next meeting ID
         this.nextMeetingId ++;
@@ -262,11 +262,11 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     private boolean allContactsExist(Set<Contact> checkContacts) {
-        ContactImpl c;
+        Contact c;
 
         //loop over the set of contacts to find matching names
         for (Iterator itr = checkContacts.iterator(); itr.hasNext(); ) {
-            c = (ContactImpl) itr.next();
+            c = (Contact) itr.next();
 
             //if the contact name contains the name parameter add the object to the list to be returned
             if (!this.contactExists(c.getId())) {
@@ -279,10 +279,10 @@ public class ContactManagerImpl implements ContactManager {
 
     private boolean contactExists(int id) {
         //loop over all contacts and check that the id exists
-        ContactImpl c;
+        Contact c;
 
         for (Iterator itr = contacts.iterator(); itr.hasNext(); ) {
-            c = (ContactImpl) itr.next();
+            c = (Contact) itr.next();
 
             //if the contact ID matches the id  parameter return true
             if (c.getId() == id) {
@@ -309,16 +309,16 @@ public class ContactManagerImpl implements ContactManager {
     private List<Meeting> searchMeetings(Contact contact, MeetingType mt) {
 
         List<MeetingImpl> retMeetings = new ArrayList<>();
-        MeetingImpl m;
-        ContactImpl c;
+        Meeting m;
+        Contact c;
 
         //loop over all meetings
         for (Iterator itrM = meetings.iterator(); itrM.hasNext(); ) {
-            m = (MeetingImpl) itrM.next();
+            m = (Meeting) itrM.next();
 
             //loop over the set of meeting contacts to see if the IDs match
             for (Iterator itrC = m.getContacts().iterator(); itrC.hasNext(); ) {
-                c = (ContactImpl) itrC.next();
+                c = (Contact) itrC.next();
 
                 if (c.getId() == contact.getId()) {
 
@@ -326,13 +326,13 @@ public class ContactManagerImpl implements ContactManager {
                     switch (mt) {
                         case PAST:
                             if (m.getDate().before(Calendar.getInstance())) {
-                                retMeetings.add(m);
+                                retMeetings.add((MeetingImpl) m);
                             }
                             break;
 
                         case FUTURE:
                             if (!m.getDate().before(Calendar.getInstance())) {
-                                retMeetings.add(m);
+                                retMeetings.add((MeetingImpl) m);
                             }
                             break;
                     }
