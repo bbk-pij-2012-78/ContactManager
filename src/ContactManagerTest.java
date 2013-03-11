@@ -234,9 +234,11 @@ public class ContactManagerTest {
         Calendar date1 = Calendar.getInstance();
         Calendar date2 = Calendar.getInstance();
         Calendar date3 = Calendar.getInstance();
+        Calendar date4 = Calendar.getInstance();
 
         date1.add(Calendar.DATE, 2);
-        date2.add(Calendar.DATE, 3);
+        date2.add(Calendar.DATE, 2);
+        date3.add(Calendar.DATE, 3);
 
         //add contacts to contact manager or the test will fail
         contactManager.addNewContact("John Smith", "some notes");
@@ -247,24 +249,30 @@ public class ContactManagerTest {
         contacts.add(new ContactImpl(0, "John Smith", "some notes" ));
         contacts.add(new ContactImpl(1, "Peter Smith", "some other notes" ));
 
+        date1.add(Calendar.HOUR, 8);
         int id1 = contactManager.addFutureMeeting(contacts, date1);
-        int id2 = contactManager.addFutureMeeting(contacts, date1);
-        int id3 = contactManager.addFutureMeeting(contacts, date2);
+        date2.add(Calendar.HOUR, 5);
+        int id2 = contactManager.addFutureMeeting(contacts, date2);
+        int id3 = contactManager.addFutureMeeting(contacts, date3);
 
         //check that we get two meetings returned for date1
         List<Meeting> list = contactManager.getFutureMeetingList(date1);
         assertEquals(list.size(), 2);
 
         //now check we get one meeting back for date2
-        list = contactManager.getFutureMeetingList(date2);
-        assertEquals(list.size(), 1);
+        list = contactManager.getFutureMeetingList(date3);
+        assertEquals(1, list.size());
+        assertEquals(id3, list.get(0).getId());
 
         //use a date that is the same date as date1 but a different time
         // to check the comparison works with different times
-        date3.add(Calendar.DATE, 2);
-        list = contactManager.getFutureMeetingList(date3);
-        assertEquals(list.size(), 2);
-        //TODO add a test to check the list is sorted chronologically
+        date4.add(Calendar.DATE, 2);
+        list = contactManager.getFutureMeetingList(date4);
+        assertEquals(2, list.size());
+
+        //check that the list is sorted chronologically
+        assertEquals(id2, list.get(0).getId());
+        assertEquals(id1, list.get(1).getId());
     }
 
     @Test
