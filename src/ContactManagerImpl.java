@@ -160,7 +160,9 @@ public class ContactManagerImpl implements ContactManager {
 
             //if the meeting date matches the date parameter and the meeting
             // is in the future add to return list
-            if (m.getDate().compareTo(date) == 0) {
+            if ((m.getDate().get(Calendar.DATE) == date.get(Calendar.DATE)) &&
+               (m.getDate().get(Calendar.MONTH) == date.get(Calendar.MONTH)) &&
+               (m.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR))) {
                 if (m.getDate().after(Calendar.getInstance())) {
                     futMeetings.add(m);
                 }
